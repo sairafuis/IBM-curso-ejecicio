@@ -1,11 +1,9 @@
 package com.microservice.training.countriesdemo.model;
 
-import java.util.Arrays;
-
 public enum Continent {
 
   ASIA(1, "asia"), EUROPE(2, "europe"), AFRICA(3, "africa"), NORTH_AMERICA(4,
-      "north-america"), SOUTH_AMERICA(5, "south-america"), UNKNOWN(0, "UNKNOWN");
+      "north_america"), SOUTH_AMERICA(5, "south_america"), UNKNOWN(0, "UNKNOWN");
 
   private int continentId;
   private String continentName;
