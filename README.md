@@ -82,7 +82,9 @@ public class CountriesController {
   
 }
 ```
-en el caso del servicio post la ruta es http://localhost:8080/api/countries/continent/id, al ser usado este devuelve la URL para la consulta por Id y resive un json de la siguiente forma
+- para el servicio de la lista de paises por continente la ruta es http://localhost:8080/api/countries/continent/name/{nombredelcontinente} o el nombre del continente que se desee, el nombre puede ser mayusculas o minisculas.
+- para el servicio de encontrar por ID un pais la ruta es http://localhost:8080/api/countries/continent/id/{id} el id para los paises es un numero
+- para el  servicio post la ruta es http://localhost:8080/api/countries/continent/id, al ser usado este devuelve la URL para la consulta por Id y resive un json de la siguiente forma
 
 ```
 {
