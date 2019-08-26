@@ -82,8 +82,13 @@ public class CountriesController {
   
 }
 ```
-en el caso del servicio post , al ser usado este devuelve la URL para la consulta por Id
-<<<<<<< HEAD
-=======
+en el caso del servicio post la ruta es http://localhost:8080/api/countries/continent/id, al ser usado este devuelve la URL para la consulta por Id y resive un json de la siguiente forma
 
->>>>>>> 40a45cff81aa15ed0aa95ead2cab2fc236e0d99e
+```
+{
+    "name": "quiroz",
+    "capital": "otro",
+    "continent":"Asia"
+}
+
+```
