@@ -17,7 +17,7 @@ public interface CountriesMongoRepository extends CrudRepository<CountryDocument
 
 ```
 
-Despues se modifico el archivo del servicio
+Despues se modifico el archivo del servicio agregando las nuevas funcionalidades.
 
 ```
 @Service
@@ -82,5 +82,5 @@ public class CountriesController {
   
 }
 ```
-
+en el caso del servicio post , al ser usado este devuelve la URL para la consulta por Id
 
