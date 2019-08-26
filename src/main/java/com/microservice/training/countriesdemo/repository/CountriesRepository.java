@@ -11,9 +11,5 @@ import java.util.List;
 @Repository
 public abstract class CountriesRepository implements CountryJpaRepository {
 
-	CountryJpaRepository service;
-	public List<CountryEntity> findByContinent(String continentName){
-    return service.findByContinent(continentName);
-  }
-
+	
 }
