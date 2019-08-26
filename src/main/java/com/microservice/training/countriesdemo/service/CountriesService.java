@@ -20,9 +20,9 @@ public class CountriesService implements ICountriesService {
   
   public List<CountryDocument> findCountriesByContinentName(String continentName) {
     Continent continent = Continent.continentByName(continentName);
-    if(continent.getContinentName().equals(continentName.toLowerCase()))
+    if((continentName.toLowerCase()).equals(continent.getContinentName()))
     {
-    return countriesRepository.findCountriesByContinent(continentName);
+    return countriesRepository.findCountriesByContinent(continentName.toUpperCase());
     }
     throw new InvalidContinentException("Continent: " + continentName + " does not exist.");
   }
