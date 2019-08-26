@@ -1,31 +1,21 @@
 package com.microservice.training.countriesdemo.repository;
 
-import com.microservice.training.countriesdemo.model.Country;
-import com.microservice.training.countriesdemo.model.utils.AfricaContinentList;
-import com.microservice.training.countriesdemo.model.utils.AsiaContinentList;
-import com.microservice.training.countriesdemo.model.utils.EuropeContinentList;
-import com.microservice.training.countriesdemo.model.utils.NorthAmericaContinentList;
-import com.microservice.training.countriesdemo.repository.api.ICountriesRepository;
+import com.microservice.training.countriesdemo.model.entity.CountryDocument;
+import com.microservice.training.countriesdemo.repository.api.CountriesMongoRepository;
 import org.springframework.stereotype.Repository;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
-public class CountriesRepository implements ICountriesRepository {
+public abstract class CountriesRepository implements CountriesMongoRepository {
 
-  public List<Country> findAllAfricaCountries(){
-    return AfricaContinentList.getAllContinentCountries();
+	CountriesMongoRepository servicio;
+  public List<CountryDocument> findCountriesByContinent(String continentName){
+    return servicio.findCountriesByContinent(continentName);
   }
 
-  public List<Country> findAllEuropeCountries() {
-    return EuropeContinentList.getAllContinentCountries();
-  }
-
-  public List<Country> findAllAsiaCountries() {
-    return AsiaContinentList.getAllContinentCountries();
-  }
-
-  public List<Country> findAllNorthAmericaCountries() {
-    return NorthAmericaContinentList.getAllContinentCountries();
-  }
+  public Optional<CountryDocument> findByName(String name){
+	    return servicio.findByName(name);
+	  }
   
 }

@@ -36,14 +36,14 @@ public class CountriesRepositoryTest {
 		
 		log.info("Testing MongoRepository findById feature");
 		
-		String countryId = "5d5f03174bb837722a424cbf";
+		String countryId = "5d6437a46b68e025bc039056";
 		Optional<CountryDocument> countryOpt = mongoRepository.findById(countryId);
 		
 		if (countryOpt.isPresent()) {
 			CountryDocument country = countryOpt.get();
 			
-			assertThat(country.getContinent()).isEqualToIgnoringCase(Continent.NORTH_AMERICA.getContinentName());
-			assertThat(country.getName()).isEqualToIgnoringCase("mexico");
+			assertThat(country.getContinent()).isEqualToIgnoringCase(Continent.ASIA.getContinentName());
+			assertThat(country.getName()).isEqualToIgnoringCase("quiroz");
 			
 			log.info("Country found: {}", country);
 		} else {
@@ -58,9 +58,9 @@ public class CountriesRepositoryTest {
 		log.info("Testing MongoRepository save update and delete feature");
 		
 		CountryDocument countryToSave = new CountryDocument();
-		String name = "IBM country";
-		String capital = "Mexico city";
-		String continentName = Continent.NORTH_AMERICA.getContinentName();
+		String name = "Prueba";
+		String capital = "1";
+		String continentName = Continent.ASIA.getContinentName();
 		
 		countryToSave.setName(name);
 		countryToSave.setCapital(capital);
@@ -78,7 +78,7 @@ public class CountriesRepositoryTest {
 		if (countryByName.isPresent()) {
 			CountryDocument country = countryByName.get();
 			
-			assertThat(country.getContinent()).isEqualToIgnoringCase(Continent.NORTH_AMERICA.getContinentName());
+			assertThat(country.getContinent()).isEqualToIgnoringCase(Continent.ASIA.getContinentName());
 			assertThat(country.getName()).isEqualToIgnoringCase(name);
 			
 			log.info("Country found: {}", country);
