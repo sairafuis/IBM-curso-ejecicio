@@ -1,4 +1,4 @@
-## Ejercicio de la sesion del 23/08/19
+## Ejercicio de la sesion del 23/08/19 (en MongoDb)
 
 Se realizaron cambios al codigo para realizar las siguientes funciones:
 - Consultar la lista de paises de un continente.
