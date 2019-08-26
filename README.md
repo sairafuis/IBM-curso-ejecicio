@@ -1,84 +1,86 @@
+## Ejercicio de la sesion del 23/08/19
 
-Se realizaron los cambios al codigo para las siguientes funciones:
--Consultar la lista de paises de un continente.
--Guardar un pais
--Consultar un pais con su Id.
+Se realizaron cambios al codigo para realizar las siguientes funciones:
+- Consultar la lista de paises de un continente.
+- Guardar un pais
+- Consultar un pais con su Id.
 
-Para esto, se modifico el archivo CountryJpaRepository.java quedando de la siguiente manera:
+Primero se modifico el archivo CountriesMongoRepository el cual quedo de la siguiente manera:
 
 ```java
 @Repository
-public interface CountryJpaRepository extends CrudRepository<CountryEntity, Integer>{
-	public List<CountryEntity> findByContinent(String continent);
-	public List<CountryEntity> findByCountryId(Integer countryId);
+public interface CountriesMongoRepository extends CrudRepository<CountryDocument, String> {
+
+	List<CountryDocument> findCountriesByContinent(String continentName);
+	Optional<CountryDocument> findByName(String name);
 }
+
 ```
 
-Posteriormente se modificaron los archivos del servicio para realizar las acciones de buscar y guardar.
+Despues se modifico el archivo del servicio
 
-### Buscar paises por continente
+```
+@Service
+public class CountriesService implements ICountriesService {
 
-```java
-@Autowired
-CountryJpaRepository countriesRepository;
-@Override
-public List<CountryEntity> findCountriesByContinentName(String continentName) {
-  Continent continent = Continent.continentByName(continentName);
-  switch (continent) {
-  case EUROPE:
-  case ASIA:
-  case AFRICA:
-  case NORTH_AMERICA:
-    return countriesRepository.findByContinent(continent.getContinentName());
-  default:
+  @Autowired
+  CountriesMongoRepository countriesRepository;
+  
+  public List<CountryDocument> findCountriesByContinentName(String continentName) {
+    Continent continent = Continent.continentByName(continentName);
+    if((continentName.toLowerCase()).equals(continent.getContinentName()))
+    {
+    return countriesRepository.findCountriesByContinent(continentName.toUpperCase());
+    }
     throw new InvalidContinentException("Continent: " + continentName + " does not exist.");
   }
+  
+  public Optional<CountryDocument> findCountryById(String countryId) {
+	Optional<CountryDocument> countryOpt =  countriesRepository.findById(countryId);
+	if (countryOpt.isPresent()) {
+		return countryOpt;
+	}
+	throw new RuntimeException("Country with ID: " + countryId + " does not exist.");
+	}
+	
+
+  public CountryDocument createCountry(CountryDocument country) {
+	    return countriesRepository.save(country);
+	  }
 }
 ```
 
-### Buscar país por id 
-```java
-@Autowired
-CountryJpaRepository countriesRepository;
-@Override
-public CountryEntity findByCountryId(Integer countryId) {
-  Optional<CountryEntity> countryOpt = countriesRepository.findById(countryId);
-  if (countryOpt.isPresent()) {
-    return countryOpt.get();
-  } else {
-    throw new InvalidCountryException("Country with id: " + countryId + " does not exist.");
+
+y por ultimo se modifico el archivo del controlador
+
+```
+@RestController
+public class CountriesController {
+
+  @Autowired
+  ICountriesService countriesService;
+
+  @GetMapping(path = "/api/countries/continent/name/{continentName}")
+  public ResponseEntity<List<CountryDocument>> findCountriesByContinentName(@PathVariable String continentName) {
+    return new ResponseEntity<List<CountryDocument>>(
+        countriesService.findCountriesByContinentName(continentName), HttpStatus.OK);
   }
-}
-
-```
-
-### Guardar nuevo país
-
-```java
-@Override
-public CountryEntity SaveNewCountry(CountryEntity country) {
-  Continent continent = Continent.continentByName(country.getContinent());
-  switch (continent) {
-  case EUROPE:
-  case ASIA:
-  case AFRICA:
-  case NORTH_AMERICA:
-    countriesRepository.save(country);
-    break;
-  default:
-    throw new InvalidContinentException("Continent: " + country.getContinent() + " does not exist.");
+  
+  @GetMapping(path = "/api/countries/continent/id/{countryId}")
+  public ResponseEntity<Optional<CountryDocument>> findCountryById(@PathVariable String countryId) {
+    return new ResponseEntity<Optional<CountryDocument>>(
+        countriesService.findCountryById(countryId), HttpStatus.OK);
   }
-  return country;	
+
+  @PostMapping("/api/countries/continent/id")
+	public ResponseEntity<Object> createCountry(@RequestBody CountryDocument country) {
+	  CountryDocument savedcountry = countriesService.createCountry(country);
+		URI location = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(savedcountry.getId()).toUri();
+		System.out.print(location);
+		return ResponseEntity.created(location).build();
+	}
+  
 }
-
-```
-La ruta para guardar un país quedó definida como:
-``` java 
-@PostMapping(path = "/api/countries/country/")
-public ResponseEntity<CountryEntity> saveCountry(@RequestBody CountryEntity country) {
-  return new ResponseEntity<CountryEntity>(
-      countriesService.SaveNewCountry(country), HttpStatus.OK);
-}  
 ```
 
-![POST request](/img/API-POST-Country.png)
+
