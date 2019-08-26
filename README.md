@@ -83,3 +83,7 @@ public class CountriesController {
 }
 ```
 en el caso del servicio post , al ser usado este devuelve la URL para la consulta por Id
+<<<<<<< HEAD
+=======
+
+>>>>>>> 40a45cff81aa15ed0aa95ead2cab2fc236e0d99e
